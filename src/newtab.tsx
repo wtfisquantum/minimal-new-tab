@@ -111,6 +111,51 @@ return (
 }
 
 
+const TaskWidget = () => {
+    const [tasks, setTasks] = useState(() => {
+        const saved = localStorage.getItem("tasks");
+        return saved ? JSON.parse(saved) : [];
+    });
+    const [newTask, setNewTask] = useState("");
+
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentDate(new Date());
+        }, 60000);
+        return () => clearInterval(timer);
+    }, []);
+
+
+    const dateString = currentDate.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+    });
+
+    const addTask = (e) => {
+        if(e.key === "Enter" && newTask.trim() !== ""){
+            setTasks([...tasks, {
+                id: Date.now(),
+                text: newTask.trim(),
+                done: false
+            }]);
+            setNewTask("");
+        }
+    };
+
+    const toggleTask = (id:any) => {
+        setTasks(tasks.map((task:any) => task.id === id ? {...task, done: !task.done}: task));
+    }
+
+}
+
+
 
 const NewsWidget = () => {
     const [imageurl, setImageUrl] = useState("");
@@ -167,6 +212,24 @@ relative w-full flex-1 rounded-2xl overflow-hidden group mb-4 shadow-inner bg-zi
 
 export default function NewTab() {
 
+const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem("settings");
+    return saved ? JSON.parse(saved) : {searchEngine: "google", theme: "dark"};
+});
+
+useEffect(() => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+}, [settings]);
+
+const cycleSearchEngine = () => {
+    const engines = ["google", "bing", "duckduckgo"];
+    const crindex = engines.indexOf(settings.searchEngine);
+    const nxtindex = (crindex + 1) % engines.length;
+    setSettings({
+        ...settings, searchEngine: engines[nxtindex]
+    });
+}
+
 
 
 
@@ -177,6 +240,11 @@ return (
     
 
     <DigitalClock />
+    
+    <MainSearchBar
+    searchEngine={settings.searchEngine}
+    onCycleEngine={cycleSearchEngine}
+    />
 
     <NewsWidget/>
     </div>
