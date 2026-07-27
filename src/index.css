@@ -1,0 +1,30 @@
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+      
+      body {
+        font-family: 'Rubik', sans-serif;
+        background-color: #09090b;
+        color: #f4f4f5;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #3f3f46; border-radius: 4px; }
+      .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #52525b; }
+      
+      /* Fix for leaflet dark mode overrides */
+      .leaflet-container {
+        background: #09090b !important;
+        font-family: 'Inter', sans-serif !important;
+      }
