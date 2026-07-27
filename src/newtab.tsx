@@ -161,6 +161,7 @@ const NewsWidget = () => {
     const [imageurl, setImageUrl] = useState("");
     const [title, setTitle] = useState("");
     const [explanation, setExplanation] = useState("");
+    const [link, setLink] = useState("");
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -169,6 +170,7 @@ const NewsWidget = () => {
                 const data = await response.json();
                 setImageUrl(data.data.articles[0].imageUrl)
                 setTitle(data.data.articles[0].title)
+                setLink(data.data.articles[0].sourceUrl)
                 setExplanation(data.data.articles[0].content)
             } catch (error) {  
                 console.error("Error fetching news:", error);
@@ -183,9 +185,9 @@ const NewsWidget = () => {
         ">
     <SectionHeader icon={ImageIcon}>Daily Discovery</SectionHeader>
 
-
 <div className="
 relative w-full flex-1 rounded-2xl overflow-hidden group mb-4 shadow-inner bg-zinc-950">
+    <a href={link} target="_blank" rel="noopener noreferrer">
     <img src={imageurl} alt={title} className="
     w-full h-full object-cover transition-all duration-1000 ease-in-out brightness-75 group-hover:brightness-100 group-hover:scale-105" />
          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/20 
@@ -203,7 +205,9 @@ relative w-full flex-1 rounded-2xl overflow-hidden group mb-4 shadow-inner bg-zi
             {explanation}
           </p>
         </div>
+        </a>
 </div>
+
         </div>
     )
 }
