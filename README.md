@@ -1,16 +1,16 @@
 <p align="center">
-	<h1 align="center">Minimal New Tab</h1>
+	<h1 align="center">MNT ~ Minimal New Tab</h1>
 </p>
 
 Minimal New Tab is a minimal and modern browser start page with a clean dark interface. It provides quick access to multiple search engines...
 
 ## What it does
 
-Minimal New Tab lets you:
+MNT ~ Minimal New Tab lets you:
 
 * search using multiple search engines
 * enjoy a clean, distraction-free dark interface
-* fetche latest technology news from the api `https://inshorts.vercel.app/news/topics/technology?offset=0`
+* fetch latest technology news from the api `https://inshorts.vercel.app/news/topics/technology?offset=0`
 
 The project is focused on creating a simple and fast new tab experience... :)
 
