@@ -10,6 +10,7 @@ Minimal New Tab lets you:
 
 * search using multiple search engines
 * enjoy a clean, distraction-free dark interface
+* fetche latest technology news from the api `https://inshorts.vercel.app/news/topics/technology?offset=0`
 
 The project is focused on creating a simple and fast new tab experience... :)
 
