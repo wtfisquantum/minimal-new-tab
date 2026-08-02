@@ -11,6 +11,14 @@ MNT ~ Minimal New Tab lets you:
 * search using multiple search engines
 * enjoy a clean, distraction-free dark interface
 * fetch latest technology news from the api `https://inshorts.vercel.app/news/topics/technology?offset=0`
+- Multi-search engine support
+- Instant search engine switching
+- Built-in Todo Manager
+- Custom homepage shortcuts
+- Latest news feed
+- Dynamic location-based Leaflet background
+- Local storage for tasks and shortcuts
+- Minimal, responsive and distraction-free design
 
 The project is focused on creating a simple and fast new tab experience... :)
 
