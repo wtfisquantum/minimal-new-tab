@@ -312,6 +312,161 @@ const BakcgroundMap = () => {
 };
 
 
+
+const LinksWidget = () => {
+    const defaultLinks = [
+        { url: "https://github.com" },
+        { url: "https://vercel.com" },
+        { url: "https://stackoverflow.com" },
+        { url: "https://youtube.com" },
+        { url: "https://x.com" },
+        { url: "https://chatgpt.com" },
+        { url: "https://figma.com" },
+        { url: "https://notion.so" },
+        { url: "https://linear.app" },
+        { url: "https://reddit.com" },
+        { url: "https://aws.amazon.com" },
+        { url: "https://news.ycombinator.com" }
+    ];
+
+    const [links, setLinks] = useState(() => {
+        const saved = localStorage.getItem('newtab_links');
+        return saved ? JSON.parse(saved) : defaultLinks;
+    });
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [newUrl, setNewUrl] = useState("");
+
+    useEffect(() => {
+        localStorage.setItem('newtab_links', JSON.stringify(links));
+    }, [links]);
+
+    const getDomain = (urlStr) => {
+        try {
+            const formattedUrl = urlStr.startsWith('http') ? urlStr : `https://${urlStr}`;
+            return new URL(formattedUrl).hostname;
+        } catch {
+            return urlStr;
+        }
+    };
+
+    const getFormattedUrl = (urlStr) => {
+        return urlStr.startsWith('http') ? urlStr : `https://${urlStr}`;
+    };
+
+    const handleAddLink = (e) => {
+        e.preventDefault();
+        if (newUrl.trim()) {
+            setLinks([...links, { url: newUrl.trim() }]);
+            setNewUrl("");
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleRemoveLink = (indexToRemove, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setLinks(links.filter((_, idx) => idx !== indexToRemove));
+    };
+
+    return (
+        <div className="flex flex-col h-[320px] bg-zinc-900/60 border border-zinc-800/80 rounded-3xl p-5 backdrop-blur-xl shadow-lg relative">
+            <SectionHeader
+                icon={ExternalLink}
+                action={
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setIsEditing(!isEditing)}
+                            className={`w-6 h-6 flex items-center justify-center rounded-lg transition-colors ${isEditing ? 'bg-white text-zinc-900' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'}`}
+                        >
+                            {isEditing ? <Check className="w-3.5 h-3.5" /> : <Edit2 className="w-3.5 h-3.5" />}
+                        </button>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="w-6 h-6 flex items-center justify-center rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+                        >
+                            <Plus className="w-4 h-4" />
+                        </button>
+                    </div>
+                }
+            >
+                Shortcuts
+            </SectionHeader>
+
+            <div className="grid grid-cols-5 gap-4 overflow-y-auto custom-scrollbar flex-1 pr-2 content-start pb-2 pt-2">
+                {links.map((link, i) => {
+                    const domain = getDomain(link.url);
+                    const iconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=256`;
+
+                    return (
+                        <div key={i} className="relative flex justify-center">
+                            <a
+                                href={isEditing ? undefined : getFormattedUrl(link.url)}
+                                onClick={(e) => isEditing && e.preventDefault()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-3xl transition-all ${isEditing ? 'cursor-default opacity-50' : 'cursor-pointer'}`}
+                            >
+                                <img
+                                    src={iconUrl}
+                                    alt={domain}
+                                    className="w-full rounded-3xl"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='2' y1='12' x2='22' y2='12'/%3E%3Cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/%3E%3C/svg%3E";
+                                    }}
+                                />
+                            </a>
+
+                            {isEditing && (
+                                <button
+                                    onClick={(e) => handleRemoveLink(i, e)}
+                                    className="absolute -top-2 -right-2 w-7 h-7 hover:text-red-400 hover:bg-red-400/10 text-zinc-500 rounded-lg flex items-center justify-center transition-colors z-10"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Add Link Modal */}
+            {isModalOpen && (
+                <div className="absolute inset-0 z-20 bg-zinc-950/90 backdrop-blur-sm rounded-3xl flex items-center justify-center p-4">
+                    <form onSubmit={handleAddLink} className="w-full flex flex-col gap-3">
+                        <h4 className="text-sm font-semibold text-white mb-1">Add Shortcut</h4>
+                        <input
+                            type="text"
+                            autoFocus
+                            value={newUrl}
+                            onChange={(e) => setNewUrl(e.target.value)}
+                            placeholder="e.g. example.com"
+                            className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-zinc-500"
+                        />
+                        <div className="flex gap-2 justify-end mt-2">
+                            <button
+                                type="button"
+                                onClick={() => setIsModalOpen(false)}
+                                className="px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-colors"
+                            >
+                                Add Link
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+        </div>
+    );
+};
+
+
 export default function NewTab() {
 
     const [settings, setSettings] = useState(() => {
