@@ -19,6 +19,8 @@ MNT ~ Minimal New Tab lets you:
 - Dynamic location-based Leaflet background
 - Local storage for tasks and shortcuts
 - Minimal, responsive and distraction-free design
+- Add customizable shortcuts
+- Allow users to create and manage quick tasks
 
 The project is focused on creating a simple and fast new tab experience... :)
 
@@ -35,7 +37,5 @@ I built this project to experiment with Tailwind CSS and create a minimal new ta
 
 ## Future Plans
 
-* Add customizable shortcuts.
-* Allow users to create and manage quick tasks.
 * Add more personalization options.
 * Support additional search engines and widgets.
