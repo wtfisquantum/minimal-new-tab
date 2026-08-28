@@ -26,17 +26,6 @@ const SectionHeader = ({ children, icon: Icon, action }) => (
   </div>
 );
 
-const DataLabel = ({ children }) => (
-  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">{children}</h4>
-);
-
-const PillBadge = ({ text }) => {
-  return (
-    <span className="inline-flex items-center px-2 py-1 rounded-full bg-zinc-800/80 text-[10px] font-medium uppercase tracking-wider text-zinc-300 border border-zinc-700 backdrop-blur-md">
-      {text}
-    </span>
-  );
-};
 
 const BackgroundMap = () => {
   const mapRef = useRef(null);
@@ -136,6 +125,10 @@ const BackgroundMap = () => {
   );
 };
 
+const DataLabel = ({ children }) => (
+  <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">{children}</h4>
+);
+
 const DigitalClock = () => {
   const [time, setTime] = useState(new Date());
 
@@ -156,6 +149,14 @@ const DigitalClock = () => {
         {split_am_pm[0]} <span className="text-7xl font-['Rubik'] font-bold text-zinc-400">{split_am_pm[1]}</span>
       </h1>
     </div>
+  );
+};
+
+const PillBadge = ({ text }) => {
+  return (
+    <span className="inline-flex items-center px-2 py-1 rounded-full bg-zinc-800/80 text-[10px] font-medium uppercase tracking-wider text-zinc-300 border border-zinc-700 backdrop-blur-md">
+      {text}
+    </span>
   );
 };
 
@@ -213,7 +214,7 @@ const LinksWidget = () => {
     { url: "https://stardance.hackclub.com/@wtfisquantum" },
     { url: "https://ysws.hackclub.com" },
     { url: "https://hackatime.hackclub.com" },
-    { url: "https://youtube.com" },
+    { url: "https://www.youtube.com" },
     { url: "https://hackclub.com" },
     { url: "https://chatgpt.com" },
     { url: "https://news.ycombinator.com" },
@@ -292,10 +293,10 @@ const LinksWidget = () => {
           return (
             <div key={i} className="relative flex justify-center">
               <a
+                                rel="noopener noreferrer"
                 href={isEditing ? undefined : getFormattedUrl(link.url)}
                 onClick={(e) => isEditing && e.preventDefault()}
                 target="_blank"
-                rel="noopener noreferrer"
                 className={`relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-3xl transition-all ${isEditing ? 'cursor-default opacity-50' : 'cursor-pointer'}`}
               >
                 <img
@@ -362,7 +363,7 @@ const TasksWidget = () => {
     const saved = localStorage.getItem('newtab_tasks');
     return saved ? JSON.parse(saved) : [
       { id: 1, text: "Please give good ratings", done: false },
-      { id: 2, text: "Btw my real name is Satya", done: true },
+      { id: 2, text: "How are you btw..?", done: true },
       { id: 3, text: "Byyyyyeeeee stranger...", done: false },
     ];
   });
@@ -374,7 +375,7 @@ const TasksWidget = () => {
   }, [tasks]);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentDate(new Date()), 60000); // Update date check every minute
+    const timer = setInterval(() => setCurrentDate(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
@@ -491,7 +492,6 @@ const ApodWidget = () => {
       <SectionHeader icon={ImageIcon}>Latest Tech News</SectionHeader>
 
       <div className="relative w-full flex-1 rounded-2xl overflow-hidden group mb-4 shadow-inner bg-zinc-950">
-        {/* Strictly grayscale rendering as per design requirements */}
         <img
           src={imageurl}
           alt="Space"
@@ -559,6 +559,13 @@ export default function App() {
         overflow: hidden;
       }
 
+
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #3f3f46; border-radius: 4px; }
+      .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #52525b; }
+      
+
       .fade-in {
         animation: fadeIn 0.8s ease-out forwards;
       }
@@ -567,12 +574,6 @@ export default function App() {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
       }
-
-      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-      .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #3f3f46; border-radius: 4px; }
-      .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #52525b; }
-      
       /* Fix for leaflet dark mode overrides */
       .leaflet-container {
         background: #09090b !important;
