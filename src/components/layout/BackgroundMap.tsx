@@ -65,8 +65,9 @@ const BackgroundMap = ({ rgbMode, bgImage }: BackgroundMapProps) => {
           keyboard: false,
         }).setView([lat, lon], 13);
 
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_dark/{z}/{x}/{y}{r}.png', {
-          maxZoom: 27,
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          className: 'dark-map-tiles',
+          maxZoom: 100,
         }).addTo(map_inst.current);
 
         const dot_pin = L.divIcon({
