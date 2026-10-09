@@ -2,28 +2,37 @@ import React, { useState, useEffect, useRef } from 'react';
 
 interface BackgroundMapProps {
   rgbMode: boolean;
+  bgImage?: string | null;
 }
 
-const BackgroundMap = ({ rgbMode }: BackgroundMapProps) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const map_ref = useRef<any>(null);
-  const [geo, setGeo] = useState<any>(null);
-  const [error, setError] = useState(false);
+const BackgroundMap = ({ rgbMode, bgImage }: BackgroundMapProps) => {
+  const map_ref = useRef<HTMLDivElement>(null);
+  const map_inst = useRef<any>(null);
+  const [geo, set_geo] = useState<any>(null);
+  const [error, set_error] = useState(false);
 
   useEffect(() => {
     fetch('https://api-point-ip-details.vercel.app')
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success' && data.lat && data.lon) {
-          setGeo(data);
+          set_geo(data);
         } else {
-          setError(true);
+          set_error(true);
         }
       })
-      .catch(() => setError(true));
+      .catch(() => set_error(true));
   }, []);
 
   useEffect(() => {
+    if (bgImage) {
+      if (map_inst.current) {
+        map_inst.current.remove();
+        map_inst.current = null;
+      }
+      return;
+    }
+
     if (!geo || error) return;
 
     const boot_map = async () => {
@@ -42,11 +51,11 @@ const BackgroundMap = ({ rgbMode }: BackgroundMapProps) => {
         await new Promise(resolve => (script.onload = resolve));
       }
 
-      if (!map_ref.current && mapRef.current) {
+      if (!map_inst.current && map_ref.current) {
         const L = (window as any).L;
         const { lat, lon } = geo;
 
-        map_ref.current = L.map(mapRef.current, {
+        map_inst.current = L.map(map_ref.current, {
           zoomControl: false,
           attributionControl: false,
           dragging: false,
@@ -58,7 +67,7 @@ const BackgroundMap = ({ rgbMode }: BackgroundMapProps) => {
 
         L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_dark/{z}/{x}/{y}{r}.png', {
           maxZoom: 27,
-        }).addTo(map_ref.current);
+        }).addTo(map_inst.current);
 
         const dot_pin = L.divIcon({
           className: 'custom-map-marker',
@@ -69,25 +78,32 @@ const BackgroundMap = ({ rgbMode }: BackgroundMapProps) => {
           iconAnchor: [12, 12],
         });
 
-        L.marker([lat, lon], { icon: dot_pin }).addTo(map_ref.current);
+        L.marker([lat, lon], { icon: dot_pin }).addTo(map_inst.current);
       }
     };
 
     boot_map();
 
     return () => {
-      if (map_ref.current) {
-        map_ref.current.remove();
-        map_ref.current = null;
+      if (map_inst.current) {
+        map_inst.current.remove();
+        map_inst.current = null;
       }
     };
-  }, [geo, error]);
+  }, [geo, error, bgImage]);
 
   return (
-    <div className={`fixed inset-0 z-0 bg-zinc-950 flex items-center justify-center${rgbMode ? ' rgb-mode' : ''}`}>
-      <div ref={mapRef} className="absolute inset-0 opacity-40 mix-blend-luminosity" />
+    <div className={`fixed inset-0 z-0 flex items-center justify-center${rgbMode ? ' rgb-mode' : ''}`}>
+      {bgImage ? (
+        <div
+          className="absolute inset-0 opacity-95 mix-blend-luminosity bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${bgImage})` }}
+        />
+      ) : (
+        <div ref={map_ref} className="absolute inset-0 opacity-50 mix-blend-luminosity" />
+      )}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#09090b_100%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-transparent to-zinc-950/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/70 via-transparent to-zinc-950/70 pointer-events-none" />
     </div>
   );
 };

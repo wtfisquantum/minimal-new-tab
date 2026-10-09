@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, ChevronsUpDown } from 'lucide-react';
 
 interface MainSearchBarProps {
   searchEngine?: 'google' | 'duckduckgo' | 'bing';
@@ -31,7 +31,7 @@ const MainSearchBar = ({ searchEngine = 'google', onCycleEngine }: MainSearchBar
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-10 relative z-10">
-      <div className="flex items-center w-full border border-zinc-700/60 bg-zinc-900/60 backdrop-blur-xl px-6 h-14
+      <div className="flex items-center w-full border border-zinc-700/60 bg-zinc-900/60 backdrop-blur-sm px-6 h-14
         rounded-2xl shadow-xl focus-within:border-zinc-500 focus-within:bg-zinc-900/80 focus-within:ring-4
         focus-within:ring-zinc-500/20 transition-all duration-300">
         <Search className="w-5 h-5 text-zinc-400 mr-4 shrink-0" />
@@ -49,9 +49,10 @@ const MainSearchBar = ({ searchEngine = 'google', onCycleEngine }: MainSearchBar
           title="Click to change search engine"
           className="hidden md:flex items-center justify-center px-4 py-1.5 bg-zinc-800/50
             hover:bg-zinc-700/80 rounded-xl border border-zinc-700/50 transition-all
-            cursor-pointer ml-2 text-xs font-bold text-zinc-400 hover:text-white capitalize tracking-wider"
+            cursor-pointer ml-2 text-xs font-medium text-zinc-400 hover:text-white capitalize tracking-wide"
         >
           {searchEngine}
+          <ChevronsUpDown className="w-3.5 h-3.5 ml-1" />
         </button>
       </div>
     </div>
