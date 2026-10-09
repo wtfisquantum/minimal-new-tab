@@ -52,8 +52,8 @@ const TasksWidget = () => {
   };
 
   return (
-    <div className="flex flex-col h-[320px] bg-zinc-900/60 border border-zinc-800/80 rounded-3xl p-5 backdrop-blur-xl shadow-lg relative">
-      <div className="flex items-center justify-between mb-4 border-b border-zinc-800 pb-3">
+    <div className="flex flex-col h-[320px] bg-zinc-900/60 border border-white/10 rounded-3xl p-5 backdrop-blur-sm relative">
+      <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-zinc-500" />
           <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-widest">{today_label}</h3>

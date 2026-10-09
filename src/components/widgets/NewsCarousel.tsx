@@ -74,7 +74,7 @@ const NewsCarousel = () => {
   const curr = feed[currentIndex];
 
   return (
-    <div className="flex flex-col h-[320px] bg-zinc-900/60 border border-zinc-800/80 rounded-3xl p-5 backdrop-blur-xl shadow-lg relative">
+    <div className="flex flex-col h-[320px] bg-zinc-900/60 border border-white/10 rounded-3xl p-5 backdrop-blur-sm relative">
       <SectionHeader icon={ImageIcon}>Latest Tech News</SectionHeader>
 
       <div className="relative w-full flex-1 rounded-2xl overflow-hidden group mb-3 shadow-inner bg-zinc-950">
